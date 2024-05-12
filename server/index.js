@@ -6,6 +6,7 @@ import { PORT } from "./config/env.config.js";
 
 // [ROUTER IMPORTS]
 import authRouter from "./router/auth.router.js";
+import chatRouter from "./router/chat.router.js";
 
 // [PACKAGE IMPORTS]
 import Express from "express";
@@ -37,6 +38,7 @@ app.use(
 
 // [ROUTER MIDDLEWARES]
 app.use("/api/auth/", authRouter);
+app.use("/api/chat/", chatRouter);
 
 // [SOCKET LOGIC]
 io.on("connection", (client) => {
