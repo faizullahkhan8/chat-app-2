@@ -2,7 +2,7 @@ import { Schema, SchemaTypes, model } from "mongoose";
 
 const chatSchema = new Schema(
     {
-        member: { type: SchemaTypes.Array, required: true },
+        members: { type: SchemaTypes.Array, required: true },
     },
     { timestamps: true }
 );

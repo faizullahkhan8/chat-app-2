@@ -1,8 +1,19 @@
 import { Router } from "express";
-import { createChat } from "../controller/chat.controller.js";
+
+// [CONTROLLER IMPORTS]
+import {
+    createChat,
+    findChat,
+    userChats,
+} from "../controller/chat.controller.js";
+
+// [MIDDLEWARE IMPORTS]
+import { protectedRoute } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.get("/", createChat);
+router.post("/", protectedRoute, createChat);
+router.get("/:userId", protectedRoute, userChats);
+router.get("/find/:firstId/:secondId", protectedRoute, findChat);
 
 export default router;
