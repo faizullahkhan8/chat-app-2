@@ -14,7 +14,7 @@ export const createChat = async (req, res, next) => {
         }
 
         const isChatAlreadyExists = await chatModel.findOne({
-            members: { $all: { senderId, receiverId } },
+            members: { $all: [senderId, receiverId] },
         });
 
         if (isChatAlreadyExists) {
@@ -22,7 +22,7 @@ export const createChat = async (req, res, next) => {
         }
 
         const newChat = new chatModel({
-            members: [{ senderId, receiverId }],
+            members: [senderId, receiverId],
         });
 
         await newChat.save();
@@ -37,9 +37,43 @@ export const createChat = async (req, res, next) => {
 };
 // [FIND CONVERSATION OF THE PARTICULAR USER]
 export const userChats = async (req, res, next) => {
-    return res.status(200).json({ msg: "working" });
+    const senderId = req.userId;
+    try {
+        const userChats = await chatModel.find({
+            members: { $in: [senderId] },
+        });
+
+        console.log(userChats);
+
+        if (userChats.length < 1) {
+            return res.status(404).json({ error: "No chats found" });
+        }
+
+        return res.status(200).json({ chats: userChats });
+    } catch (error) {
+        res.status(500).json({ error: "internal server error" }),
+            console.log("[ERROR IN CHAT CONTROLLER]", error.message);
+    }
 };
 // [FIND THE SPACIFIC CHATS OF THE USER]
 export const findChat = async (req, res, next) => {
-    return res.status(200).json({ msg: "working" });
+    const senderId = req.userId;
+    const { receiverId } = req.params;
+
+    try {
+        const chat = await chatModel.findOne({
+            members: { $all: [senderId, receiverId] },
+        });
+
+        if (!chat) {
+            return res.status(404).json({ error: "chat not found" });
+        }
+
+        return res.status(200).json({ chat });
+    } catch (error) {
+        return (
+            res.status(500).json({ error: "internal server error" }),
+            console.log("[ERROR IN CHAT CONTROLLER]", error.message)
+        );
+    }
 };

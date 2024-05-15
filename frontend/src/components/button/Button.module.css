@@ -1,0 +1,51 @@
+.default {
+    width: 100%;
+    padding: 0.5rem;
+
+    font-size: large;
+    font-weight: bold;
+
+    color: white;
+    background: linear-gradient(to right, orange, darkorange);
+
+    box-shadow: 0 4px 6px -1px rgba(226, 134, 30, 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+}
+
+.default:hover {
+    background: transparent;
+    color: darkorange;
+    border: 1px solid darkorange;
+}
+
+.ghoost {
+    width: 100%;
+    padding: 0.5rem;
+
+    font-size: large;
+    font-weight: bold;
+
+    color: darkorange;
+    background: transparent;
+
+    box-shadow: 0 4px 6px -1px rgba(226, 134, 30, 0.1),
+        0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+    border-radius: 0.5rem;
+    border: 1px solid darkorange;
+
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+}
+
+.ghoost:hover {
+    background: linear-gradient(to right, orange, darkorange);
+    color: white;
+    border: 1px solid transparent;
+}

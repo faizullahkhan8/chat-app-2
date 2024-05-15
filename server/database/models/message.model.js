@@ -11,3 +11,5 @@ const messageSchema = new Schema(
 );
 
 const messageModel = model("Message", messageSchema, "Chat");
+
+export default messageModel;

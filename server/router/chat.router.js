@@ -13,7 +13,7 @@ import { protectedRoute } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.post("/", protectedRoute, createChat);
-router.get("/:userId", protectedRoute, userChats);
-router.get("/find/:firstId/:secondId", protectedRoute, findChat);
+router.get("/", protectedRoute, userChats);
+router.get("/find/:receiverId", protectedRoute, findChat);
 
 export default router;
