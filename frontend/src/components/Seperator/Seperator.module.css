@@ -1,0 +1,6 @@
+.seperator {
+    width: 100%;
+    margin: 16px 0;
+    height: 2px;
+    background: linear-gradient(to right, transparent, orange, transparent);
+}

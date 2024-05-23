@@ -8,6 +8,7 @@ import { PORT } from "./config/env.config.js";
 import authRouter from "./router/auth.router.js";
 import chatRouter from "./router/chat.router.js";
 import messageRouter from "./router/message.router.js";
+import userRouter from "./router/user.router.js";
 
 // [PACKAGE IMPORTS]
 import Express from "express";
@@ -32,6 +33,7 @@ app.use(cookieParser());
 app.use("/api/auth/", authRouter);
 app.use("/api/chat/", chatRouter);
 app.use("/api/message/", messageRouter);
+app.use("/api/user/", userRouter);
 
 // [SOCKET LOGIC]
 

@@ -2,6 +2,7 @@ import bcryptjs from "bcryptjs";
 import userModel from "../database/models/user.model.js";
 import { genToken, storeToken } from "../services/webToken.js";
 import tokenModel from "../database/models/token.model.js";
+import DTO from "../DTO/user.dto.js";
 
 export const Register = async (req, res, next) => {
     try {
@@ -17,6 +18,12 @@ export const Register = async (req, res, next) => {
             return res
                 .status(500)
                 .json({ error: "username must at least 8 character" });
+        }
+
+        if (password.length < 8) {
+            return res
+                .status(500)
+                .json({ error: "password must at least 8 character" });
         }
 
         // [CHEAKING THE CONFIRM PASSWORD WITH PASSWORD]
@@ -61,8 +68,11 @@ export const Register = async (req, res, next) => {
             // [SAVE USER IN DB]
             await user.save();
 
+            // [PASS USER OBJECT THROUGH DTO -> HIDE UNECCESORY DATA]
+            const userDto = new DTO(user);
+
             // [SEND SUCCESS RESPONSE TO THE USER]
-            return res.status(201).json({ user });
+            return res.status(201).json({ user: userDto });
         }
     } catch (error) {
         return (
@@ -117,8 +127,11 @@ export const Login = async (req, res, next) => {
         // [STORE TOKEN IN DB]
         await storeToken(TOKEN, user._id);
 
+        // [PASS USER OBJECT THROUGH DTO -> HIDE UNECCESORY DATA]
+        const userDto = new DTO(user);
+
         // [SEND SUCCESS RESPONSE TO USER]
-        return res.status(200).json({ user });
+        return res.status(200).json({ user: userDto });
     } catch (error) {
         return (
             // [SEND FAILURE REQUEST TO USER]

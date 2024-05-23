@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
-import Button from "../../components/button/Button";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux-store/Slices/user.slice.js";
+
+import { Link, useNavigate } from "react-router-dom";
+import Button from "../../components/Button/Button.jsx";
 import Heading from "../../components/Heading/Heading";
 import Input from "../../components/Input/Input";
 import { RegisterApi } from "../../API/auth.request";
+import { toast } from "react-toastify";
 
 const Register = () => {
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+
+    const [loading, setLoading] = useState(false);
+
     const [data, setData] = useState({
         name: "",
         username: "",
@@ -23,12 +33,23 @@ const Register = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        setLoading(true);
         try {
             const result = await RegisterApi(data);
-            console.log(result);
+
+            if (result?.status === 201) {
+                dispatch(setUser(result?.data?.user));
+
+                toast.success("Register succesfully");
+                navigate("/");
+            }
         } catch (error) {
             console.log("[ERROR IN REGISTER]", error.message);
+            if (error?.response?.data?.error) {
+                toast.error(error?.response?.data?.error);
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -40,6 +61,7 @@ const Register = () => {
             >
                 <Heading size="lg">Register</Heading>
                 <Input
+                    style={{ width: "100%" }}
                     autoComplete="off"
                     type="text"
                     placeholder="Name..."
@@ -47,6 +69,7 @@ const Register = () => {
                     onChange={getUserData}
                 />
                 <Input
+                    style={{ width: "100%" }}
                     autoComplete="off"
                     type="text"
                     placeholder="Username..."
@@ -54,6 +77,7 @@ const Register = () => {
                     onChange={getUserData}
                 />
                 <Input
+                    style={{ width: "100%" }}
                     autoComplete="off"
                     type="password"
                     placeholder="Password..."
@@ -61,6 +85,7 @@ const Register = () => {
                     onChange={getUserData}
                 />
                 <Input
+                    style={{ width: "100%" }}
                     autoComplete="off"
                     type="password"
                     placeholder="Confirm Password..."
@@ -103,13 +128,18 @@ const Register = () => {
                         <label htmlFor="female">Female</label>
                     </div>
                 </div>
-                <p className="text-red-600 font-bold text-md">error !</p>
-                <Button varients="default" type="submit">
-                    Register
+                <Button
+                    varients="default"
+                    type="submit"
+                    style={{ width: "100%" }}
+                >
+                    {loading ? "Loading" : "Register"}
                 </Button>
                 Already have an account !
                 <Link to={"/login"} className="w-full text-center">
-                    <Button varients="ghoost">Login</Button>
+                    <Button style={{ width: "100%" }} varients="ghoost">
+                        Login
+                    </Button>
                 </Link>
             </form>
         </div>

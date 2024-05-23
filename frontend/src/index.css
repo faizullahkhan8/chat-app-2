@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-    --base-bg-color: linear-gradient(to right, orange, darkorange);
-}
-
-.button {
-    background: var(--base-bg-color);
+body,
+html {
+    padding: 0 0.5rem;
+    background: rgb(248, 243, 230);
+    overflow: hidden;
 }

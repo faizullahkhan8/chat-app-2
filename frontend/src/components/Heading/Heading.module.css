@@ -4,6 +4,10 @@
     text-shadow: 2px 2px 1.5rem orange;
 }
 
+.md {
+    font-size: 1.25rem;
+}
+
 .lg {
     font-size: 2.25rem;
 }

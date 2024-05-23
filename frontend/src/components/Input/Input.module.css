@@ -1,5 +1,4 @@
 .defaults {
-    width: 100%;
     outline: none;
     border-radius: 1.25rem;
     border: 1px solid darkorange;
@@ -9,7 +8,7 @@
     &:hover {
         box-shadow: 0 4px 6px -1px rgba(226, 134, 30, 0.1),
             0 2px 4px -2px rgb(0 0 0 / 0.1);
-        cursor: pointer;
+        cursor: text;
     }
 }
 

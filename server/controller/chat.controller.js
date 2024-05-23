@@ -43,8 +43,6 @@ export const userChats = async (req, res, next) => {
             members: { $in: [senderId] },
         });
 
-        console.log(userChats);
-
         if (userChats.length < 1) {
             return res.status(404).json({ error: "No chats found" });
         }
