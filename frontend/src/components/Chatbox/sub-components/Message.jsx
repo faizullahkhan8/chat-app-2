@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import timesago from "timesago";
 
 const Message = ({ message }) => {
     const currentUser = useSelector((state) => state.user);
@@ -9,11 +10,12 @@ const Message = ({ message }) => {
             <div
                 className={`${
                     message.receiverId === currentUser._id
-                        ? "float-left"
-                        : "float-right"
-                } bg-orange-500 p-2 rounded-md mb-2 text-white font-bold leading-4`}
+                        ? "float-left bg-sky-500"
+                        : "float-right  bg-orange-500"
+                }  p-2 rounded-md mb-2`}
             >
-                {message.text}
+                <p className=" text-white font-semibold">{message.text}</p>
+                <p className="text-slate-200">{timesago(message.createdAt)}</p>
             </div>
         </div>
     );

@@ -33,6 +33,7 @@ const Login = () => {
 
             if (result?.status === 200) {
                 dispatch(setUser(result?.data?.user));
+
                 toast.success("Login succesfully");
                 navigate("/");
             }

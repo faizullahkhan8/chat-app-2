@@ -1,36 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
-import { getMessagesApi } from "../../../API/message.request.js";
 import Message from "./Message.jsx";
 
-const Messages = () => {
+const Messages = ({ messages }) => {
     const chatId = useSelector((state) => state.conversation._id);
 
-    const [messages, setMessages] = useState([]);
+    const scroll = useRef();
 
     useEffect(() => {
-        const getMessages = async () => {
-            try {
-                const result = await getMessagesApi(chatId);
-                if (result.status === 200) {
-                    setMessages(result.data.messages);
-                }
-            } catch (error) {
-                console.log(error.response.data);
-            }
-        };
-
-        if (chatId) getMessages();
-
-        return () => setMessages([]);
-    }, [chatId]);
+        setTimeout(() => {
+            scroll.current?.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+    }, [messages]);
 
     return (
         <div className="flex-1 flex flex-col overflow-y-scroll">
             {chatId ? (
                 messages.length > 1 ? (
                     messages.map((message) => {
-                        return <Message key={message._id} message={message} />;
+                        return (
+                            <div key={message._id} ref={scroll}>
+                                <Message message={message} />;
+                            </div>
+                        );
                     })
                 ) : (
                     <div className="text-center text-xl">No message yet!</div>
