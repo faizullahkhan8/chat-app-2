@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Button from "../Button/Button.jsx";
 import { resetUser } from "../../redux-store/Slices/user.slice.js";
 import { resetConversation } from "../../redux-store/Slices/conversation.slice.js";
 import { useDispatch, useSelector } from "react-redux";
 import { LogoutApi } from "../../API/auth.request.js";
 import { toast } from "react-toastify";
+import { socketContext } from "../../contexts/Socket.context.jsx";
 
 const Profile = () => {
     const user = useSelector((state) => state.user);
+
+    const { socket } = useContext(socketContext);
 
     const dispatch = useDispatch();
 
@@ -20,6 +23,7 @@ const Profile = () => {
             if (result.status === 200) {
                 dispatch(resetUser());
                 dispatch(resetConversation());
+                socket.disconnect();
                 toast.success("Logout succesfully");
             }
         } catch (error) {

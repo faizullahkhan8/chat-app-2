@@ -20,7 +20,7 @@ const Messages = ({ messages }) => {
                     messages.map((message) => {
                         return (
                             <div key={message._id} ref={scroll}>
-                                <Message message={message} />;
+                                <Message message={message} />
                             </div>
                         );
                     })

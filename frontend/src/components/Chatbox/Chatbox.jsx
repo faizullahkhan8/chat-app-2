@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Seperator from "../Seperator/Seperator.jsx";
 import Nav from "./sub-components/Nav.jsx";
 import Messages from "./sub-components/Messages.jsx";
@@ -7,6 +7,8 @@ import Button from "../Button/Button.jsx";
 import { useSelector } from "react-redux";
 import { getMessagesApi, sendMessagesApi } from "../../API/message.request.js";
 import { toast } from "react-toastify";
+import { socketContext } from "../../contexts/Socket.context.jsx";
+import { useMessageListener } from "../../hooks/useMessageListener.js";
 
 const Chatbox = () => {
     const conversation = useSelector((state) => state.conversation);
@@ -14,6 +16,10 @@ const Chatbox = () => {
     const [sendMessage, setSendMessage] = useState("");
 
     const [messages, setMessages] = useState([]);
+
+    const { socket } = useContext(socketContext);
+
+    useMessageListener({ setMessages });
 
     useEffect(() => {
         const getMessages = async () => {
@@ -43,8 +49,10 @@ const Chatbox = () => {
             const result = await sendMessagesApi(data);
 
             if (result.status === 201) {
-                console.log(result.data);
                 setMessages((pre) => [...pre, result.data.message]);
+
+                socket.emit("sendMessage", result.data.message);
+
                 setSendMessage("");
                 toast.success("message sent succesfully!");
             }

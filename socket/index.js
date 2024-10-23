@@ -1,13 +1,28 @@
-const io = require("socket.io")(8800, {
-    cors: {
-        origin: "http://localhost:5173",
-    },
+import { Server } from "socket.io";
+
+const io = new Server(8800, {
+    cors: "http://localhost:5173",
 });
 
+let onlineUsers = [];
+
 io.on("connection", (socket) => {
-    console.log(socket._id);
+    const userId = socket.handshake.query.userId;
+
+    if (userId !== undefined) {
+        onlineUsers[userId] = socket.id;
+    }
+
+    io.emit("getOnlineUsers", Object.keys(onlineUsers));
+
+    socket.on("sendMessage", (message) => {
+        const receiverId = onlineUsers[message.receiverId];
+        io.to(receiverId).emit("receiveMessage", message);
+    });
 
     socket.on("disconnect", () => {
-        console.log("disconnected", socket._id);
+        delete onlineUsers[userId];
+
+        io.emit("getOnlineUsers", onlineUsers);
     });
 });

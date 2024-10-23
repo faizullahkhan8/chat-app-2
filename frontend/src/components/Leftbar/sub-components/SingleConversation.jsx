@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getUserApi } from "../../../API/user.request";
 import { useDispatch, useSelector } from "react-redux";
 import { setConversation } from "../../../redux-store/Slices/conversation.slice.js";
+import { socketContext } from "../../../contexts/Socket.context.jsx";
 
-const SingleConver = ({ conversation, currentUser }) => {
+const SingleConversation = ({ conversation, currentUser }) => {
     const receiverId = conversation.members.find(
         (id) => currentUser._id !== id
     );
     const [user, setUser] = useState(null);
+
+    const { onlineUsers } = useContext(socketContext);
 
     const selectedConversation = useSelector((state) => state.conversation._id);
 
@@ -42,9 +45,12 @@ const SingleConver = ({ conversation, currentUser }) => {
             } rounded-md p-1 cursor-pointer hover:shadow hover:shadow-orange-500`}
         >
             <div
-                className="flex items-center justify-center w-12 h-12 rounded-full border border-orange-500"
+                className="relative flex items-center justify-center w-12 h-12 rounded-full border border-orange-500"
                 style={{ backgroundColor: "rgb(248, 243, 230)" }}
             >
+                {onlineUsers.some((elem) => elem === receiverId) && (
+                    <div className="absolute top-0 right-0 w-3 h-3 bg-blue-500 rounded-full" />
+                )}
                 <p className="text-xl font-bold text-orange-500">
                     {user?.username[0]?.toUpperCase()}
                 </p>
@@ -59,4 +65,4 @@ const SingleConver = ({ conversation, currentUser }) => {
     );
 };
 
-export default SingleConver;
+export default SingleConversation;
